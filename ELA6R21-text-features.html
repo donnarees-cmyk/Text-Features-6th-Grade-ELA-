@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELA.6.R.2.1 Text Sections and Features</title>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#172554;--bg:#eaf1fb;--line:#c9d6ea;--teal:#0d9488;--sun:#facc15}
+*{box-sizing:border-box}body{margin:0;font-family:Lexend,system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+.wrap{max-width:820px;margin:0 auto;padding:20px 14px 40px}
+header{background:var(--ink);color:#fff;border-radius:16px;padding:22px;margin-bottom:14px}
+header h1{margin:0 0 4px;font-size:clamp(1.3rem,4vw,1.9rem)}header p{margin:0;opacity:.85;font-size:.9rem}
+main{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px}
+h3{margin:20px 0 6px}ol{padding-left:22px}li{margin:6px 0}
+button{font:inherit;cursor:pointer;color:inherit}button:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.pass{background:var(--bg);border-left:6px solid var(--sun);border-radius:8px;padding:14px 16px;font-size:1.05rem;margin:10px 0}
+.think{background:#ccfbf1;border-radius:10px;padding:12px 14px;margin-top:10px}
+.btn{background:var(--ink);color:#fff;border:0;border-radius:10px;padding:10px 18px;margin-top:10px}
+.btn.alt{background:#fff;color:var(--ink);border:2px solid var(--ink)}
+.meta{font-size:.85rem;opacity:.7;margin:0}.opts{display:grid;gap:8px;margin:10px 0}
+.opt{text-align:left;background:#fff;border:2px solid var(--line);border-radius:10px;padding:12px}
+.opt:hover:not(:disabled){border-color:var(--teal)}.opt.ok{background:#dcfce7;border-color:#16a34a}.opt.no{background:#fee2e2;border-color:#dc2626}
+.fb{border-radius:8px;padding:10px;margin:8px 0}.fb.ok{background:#dcfce7}.fb.no{background:#fef9c3}.done{text-align:center}
+</style></head><body><div class="wrap">
+<header><h1>Text Sections and Features</h1><p>ELA.6.R.2.1: Explain how individual text sections and/or features convey meaning in texts.</p></header>
+<main aria-live="polite"><p class="goal" id="goal"></p><h3>How to do it</h3><ol id="steps"></ol>
+<h3>Watch a reader think</h3><div class="pass" id="pass"></div><button class="btn" id="show">Show how a reader thinks</button><div id="think"></div>
+<h3>Your turn</h3><div id="prac"></div></main></div>
+<script>
+/* ===== EDIT CONTENT HERE: goal, steps, p (example), think, tip, qs (c = optional passage for that question) ===== */
+const L={"goal": "Explain how headings, bold words, captions, and sections help a text share its meaning.", "steps": ["Notice the features: headings, bold words, captions, diagrams, and sidebars.", "Ask what job each feature does for the reader.", "Explain how the sections fit together to build the whole text's meaning."], "p": "<b>Volcanoes: Earth's Safety Valves</b><br><i>How Eruptions Begin</i><br>Deep underground, melted rock called <b>magma</b> rises toward the surface.<br><small>Caption: A cross-section shows magma rising through a vent.</small><br><i>Staying Safe</i><br>Scientists use sensors to detect small earthquakes that warn of an eruption.", "think": "The subheading \"How Eruptions Begin\" tells me this section explains the cause. The bold word <b>magma</b> is a key term, and the text defines it right away. The caption helps me picture the process.", "tip": "Ask what job the feature does for the reader.", "qs": [{"q": "What does the subheading \"How Eruptions Begin\" tell the reader?", "a": "What the next section will explain", "o": ["What the next section will explain", "The author's opinion", "How the story ends", "Who wrote the text"], "e": "Subheadings preview the focus of each section."}, {"q": "Why is the word <b>magma</b> in bold?", "a": "It is a key term that the text defines", "o": ["It is a key term that the text defines", "It is the most exciting word", "It is a mistake", "It is the author's name"], "e": "Bold words signal important vocabulary."}, {"q": "What is the purpose of the caption?", "a": "To explain what the picture or diagram shows", "o": ["To explain what the picture or diagram shows", "To tell a joke", "To list the author's sources", "To end the article"], "e": "Captions connect images to the text's ideas."}, {"q": "Why does the author add a section called \"Staying Safe\"?", "a": "To move from how eruptions happen to what people can do about them", "o": ["To move from how eruptions happen to what people can do about them", "To repeat the first section", "To change the topic completely", "To describe a different volcano"], "e": "Each section adds a new part of the meaning."}]};
+const $=id=>document.getElementById(id);
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+$('goal').textContent=L.goal;$('steps').innerHTML=L.steps.map(s=>'<li>'+s+'</li>').join('');$('pass').innerHTML=L.p;
+$('show').onclick=()=>{$('think').innerHTML='<div class="think">💭 '+L.think+'</div>';$('show').hidden=true};
+function prac(qi,firsts){
+  const box=$('prac');
+  if(qi>=L.qs.length){box.innerHTML='<div class="done"><h3>Practice complete!</h3><p>You got '+firsts+' of '+L.qs.length+' on the first try.</p><button class="btn" id="rt">Try again</button></div>';$('rt').onclick=()=>prac(0,0);return}
+  const q=L.qs[qi],opts=shuffle(q.o);let tries=0,solved=false;
+  box.innerHTML='<p class="meta">Question '+(qi+1)+' of '+L.qs.length+'</p>'+(q.c?'<div class="pass">'+q.c+'</div>':'')+'<p><b>'+q.q+'</b></p><div class="opts">'+opts.map((o,k)=>'<button class="opt" data-k="'+k+'">'+o+'</button>').join('')+'</div><div id="fb"></div><button class="btn" id="nq" hidden>'+(qi+1<L.qs.length?'Next question':'Finish')+'</button>';
+  box.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    if(solved)return;tries++;const ok=opts[b.dataset.k]===q.a;
+    if(ok){solved=true;b.classList.add('ok');box.querySelectorAll('.opt').forEach(o=>o.disabled=true);$('fb').innerHTML='<div class="fb ok">✓ Correct! '+q.e+'</div>';$('nq').hidden=false}
+    else{b.classList.add('no');b.disabled=true;$('fb').innerHTML='<div class="fb no">Not quite. Hint: '+L.tip+' Try another answer.</div>'}});
+  $('nq').onclick=()=>prac(qi+1,firsts+(tries===1?1:0));
+}
+prac(0,0);
+</script></body></html>
